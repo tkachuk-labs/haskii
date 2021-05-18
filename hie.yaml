@@ -1,0 +1,8 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: haskii:lib
+    - path: "./app"
+      component: haskii:exe:haskii-exe
+    - path: "./test"
+      component: haskii:test:haskii-test
