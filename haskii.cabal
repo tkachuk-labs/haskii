@@ -26,8 +26,22 @@ source-repository head
   location: https://github.com/tkachuk-labs/haskii
 
 library
+  exposed-modules:
+      Haskii
+      Haskii.Figlet
+      Haskii.Figlet.FLF
+      Haskii.Figlet.Fonts
+      Haskii.Figlet.TH
+      Haskii.Figlet.Types
+      Haskii.Internal.Pair
+      Haskii.Internal.RangeMap
+      Haskii.Rainbow
+      Haskii.Text
+      Haskii.Types
   other-modules:
       Paths_haskii
+  hs-source-dirs:
+      ./
   default-extensions:
       NoImplicitPrelude
       MultiParamTypeClasses
@@ -35,7 +49,6 @@ library
       OverloadedStrings
       ScopedTypeVariables
       DerivingStrategies
-      Safe
       FlexibleInstances
       TypeFamilies
   ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction
@@ -44,14 +57,18 @@ library
     , attoparsec ==0.13.*
     , base >=4.7 && <5
     , bytestring
+    , casing >=0.1.4 && <0.2
     , chronos
     , concur-core
     , concur-replica
     , containers
+    , directory
+    , directory-tree
     , envparse
     , esqueleto
     , extra
     , file-embed
+    , filepath
     , hspec
     , hspec-wai
     , katip
@@ -71,6 +88,7 @@ library
     , stm
     , template-haskell
     , text
+    , th-lift-instances
     , time
     , unbounded-delays
     , universum

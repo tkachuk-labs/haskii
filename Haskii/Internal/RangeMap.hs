@@ -1,55 +1,53 @@
-{-# LANGUAGE Safe,FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE Safe #-}
 
-{-|
- - Module      : Haskii.Internal.RangeMap
- - Description : A Map using non-overlapping ranges as keys
- - Copyright   : (c) Maxime Augier, 2018
- - License     : BSD3
- - Maintainer  : max@xolus.net
- - Stability   : experimental
- -
- - This datastructure is used to keep track of covering chunks for a single line of text.
- -
- - -}
-
+-- |
+-- - Module      : Haskii.Internal.RangeMap
+-- - Description : A Map using non-overlapping ranges as keys
+-- - Copyright   : (c) Maxime Augier, 2018
+-- - License     : BSD3
+-- - Maintainer  : max@xolus.net
+-- - Stability   : experimental
+-- -
+-- - This datastructure is used to keep track of covering chunks for a single line of text.
+-- -
+-- -
 module Haskii.Internal.RangeMap
-    ( RangeMap
-    , empty
-    , fromList
-    , insert
-    , pad
-    , singleton
-    , squash
-    , toList
-    ) where
+  ( RangeMap,
+    empty,
+    fromList,
+    insert,
+    pad,
+    singleton,
+    squash,
+    toList,
+  )
+where
 
 import qualified Data.List as L
 import qualified Data.Map as M
 import Data.Map (Map)
 import Data.Ord
 import Haskii.Types
-import Prelude hiding (span, take, drop, length)
+import Prelude hiding (drop, length, span, take)
 
--- | An interval [a,b[ over integers. 
+-- | An interval [a,b[ over integers.
 data Span = Span Int Int
-    deriving (Show)
-span :: (Int,Int) -> Span
-span (a,b) | a > b = Span b a
-           | otherwise = Span a b
+  deriving (Show)
 
 -- | Two intervals are only considered different if they are non-overlapping.
 -- | This ensures that a map keyed by intervals cannot contain overlapping ranges.
 instance Ord Span where
-    compare (Span a b) (Span a' b') = case (b <= a', a >= b') of
-        (True,_) -> LT
-        (_,True) -> GT
-        _        -> EQ
+  compare (Span a b) (Span a' b') = case (b <= a', a >= b') of
+    (True, _) -> LT
+    (_, True) -> GT
+    _ -> EQ
 
 instance Eq Span where
-    a == b = (compare a b == EQ)
+  a == b = (compare a b == EQ)
 
 -- | The main datatype. Conceptually equivalent to [((Int,Int), r)], with non-overlapping intervals as keys
-newtype RangeMap r = RangeMap (Map Span (Span,r))
+newtype RangeMap r = RangeMap (Map Span (Span, r))
 
 -- | An empty RangeMap
 empty :: RangeMap r
@@ -65,52 +63,51 @@ singleton offset r = insert offset r empty
 insert :: Sliceable r => Int -> r -> RangeMap r -> RangeMap r
 insert offset r = insert' (Span offset (offset + length r), r)
 
-insert' :: Sliceable r => (Span,r) -> RangeMap r -> RangeMap r
-insert' e@(s,_) (RangeMap m) =
-    case M.lookup s m of
-        Nothing -> RangeMap (M.insert s e m)
-        Just e'@(s',_) -> L.foldr (insert') (RangeMap (M.delete s' m)) (breakApart e e')
-
+insert' :: Sliceable r => (Span, r) -> RangeMap r -> RangeMap r
+insert' e@(s, _) (RangeMap m) =
+  case M.lookup s m of
+    Nothing -> RangeMap (M.insert s e m)
+    Just e'@(s', _) -> L.foldr (insert') (RangeMap (M.delete s' m)) (breakApart e e')
 
 -- | Resolves a conflict between two sliceables, turning them into one, two or three
 -- | non-overlapping chunks.
-breakApart :: Sliceable r => (Span,r) -> (Span,r) -> [(Span,r)]
-breakApart x@((Span a b),r) y@((Span a' b'),r') = 
-    let
-        leftoverL = (Span a' a, take (a-a') r')
-        leftoverR = (Span b b', drop (b-a') r')
-    in case (a <= a', b >= b') of
-        (True,True)   -> [x]
-        (True,False)  -> [x, leftoverR]
-        (False,True)  -> [leftoverL, x]
-        (False,False) -> [leftoverL, x, leftoverR] where
+breakApart :: Sliceable r => (Span, r) -> (Span, r) -> [(Span, r)]
+breakApart x@((Span a b), _) ((Span a' b'), r') =
+  let leftoverL = (Span a' a, take (a - a') r')
+      leftoverR = (Span b b', drop (b - a') r')
+   in case (a <= a', b >= b') of
+        (True, True) -> [x]
+        (True, False) -> [x, leftoverR]
+        (False, True) -> [leftoverL, x]
+        (False, False) -> [leftoverL, x, leftoverR] where
 
--- | Builds a RangeMap from a list of elements with offsets. The upper interval bound is computed from 
+-- | Builds a RangeMap from a list of elements with offsets. The upper interval bound is computed from
 -- | the element length. In case of conflicts, the later elements cover the earlier ones.
-fromList :: Sliceable r => [(Int,r)] -> RangeMap r
+fromList :: Sliceable r => [(Int, r)] -> RangeMap r
 fromList = L.foldr (uncurry insert) empty
 
 -- | Turn back the RangeMap into a map.
 -- | `fromList . toList == id`
 -- | `(toList . fromList) l == l iif. l does not contain any overlapping ranges.
-toList :: RangeMap r -> [(Int,r)]
-toList (RangeMap m) = [(a,r) | (Span a b, r) <- M.elems m ]
+toList :: RangeMap r -> [(Int, r)]
+toList (RangeMap m) = [(a, r) | (Span a _, r) <- M.elems m]
 
 -- | Turns a list of possibly overlapping chunks into non-overlapping ones, cutting the covered pieces if needed.
-squash :: Sliceable r => [(Int,r)] -> [(Int,r)]
+squash :: Sliceable r => [(Int, r)] -> [(Int, r)]
 squash = toList . fromList
 
 -- | Turns a list of chunks with explicit offsets into a list of contiguous chunks, generating padding chunks if needed.
-pad :: Paddable r => [(Int,r)] -> [r]
-pad = pad' 0 . squash where
+pad :: Paddable r => [(Int, r)] -> [r]
+pad = pad' 0 . squash
+  where
     pad' _ [] = []
-    pad' n ((o,x):xs) = let rest = pad' (o + length x) xs 
-                            p = o - n
-                         in case compare p 0 of
-                            LT -> drop (-p) x : rest
-                            EQ -> x : rest
-                            GT -> padding p : x : rest
-                              
+    pad' n ((o, x) : xs) =
+      let rest = pad' (o + length x) xs
+          p = o - n
+       in case compare p 0 of
+            LT -> drop (- p) x : rest
+            EQ -> x : rest
+            GT -> padding p : x : rest
 
 instance Show r => Show (RangeMap r) where
-    show rm = "fromList " ++ show (toList rm)
+  show rm = "fromList " ++ show (toList rm)
