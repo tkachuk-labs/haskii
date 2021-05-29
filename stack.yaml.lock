@@ -5,6 +5,13 @@
 
 packages:
 - completed:
+    hackage: ghc-source-gen-0.4.0.0@sha256:b6cdde6b183e70f6fbed3b0a45ad6640204b636e9a7fb898c5d7ec79719f14a1,3698
+    pantry-tree:
+      size: 2304
+      sha256: c7b9e9e90e9bb22ff0fb39970eb9fb6abbc157590f4ebb148897a174290bf028
+  original:
+    hackage: ghc-source-gen-0.4.0.0@sha256:b6cdde6b183e70f6fbed3b0a45ad6640204b636e9a7fb898c5d7ec79719f14a1,3698
+- completed:
     hackage: envparse-0.4.1@sha256:989902e6368532548f61de1fa245ad2b39176cddd8743b20071af519a709ce30,2842
     pantry-tree:
       size: 1180
