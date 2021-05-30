@@ -35,7 +35,6 @@ import qualified Haskii.Figlet.Font.BigMoneyNe
 import qualified Haskii.Figlet.Font.BigMoneyNw
 import qualified Haskii.Figlet.Font.BigMoneySe
 import qualified Haskii.Figlet.Font.BigMoneySw
-import qualified Haskii.Figlet.Font.Bigchief
 import qualified Haskii.Figlet.Font.Bigfig
 import qualified Haskii.Figlet.Font.Block
 import qualified Haskii.Figlet.Font.Bolger
@@ -310,7 +309,6 @@ data Font
     BigMoneyNw |
     BigMoneySe |
     BigMoneySw |
-    Bigchief |
     Bigfig |
     Block |
     Bolger |
@@ -589,7 +587,6 @@ getFLF BigMoneyNe = Haskii.Figlet.Font.BigMoneyNe.getFLF
 getFLF BigMoneyNw = Haskii.Figlet.Font.BigMoneyNw.getFLF
 getFLF BigMoneySe = Haskii.Figlet.Font.BigMoneySe.getFLF
 getFLF BigMoneySw = Haskii.Figlet.Font.BigMoneySw.getFLF
-getFLF Bigchief = Haskii.Figlet.Font.Bigchief.getFLF
 getFLF Bigfig = Haskii.Figlet.Font.Bigfig.getFLF
 getFLF Block = Haskii.Figlet.Font.Block.getFLF
 getFLF Bolger = Haskii.Figlet.Font.Bolger.getFLF
