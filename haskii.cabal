@@ -30,7 +30,57 @@ library
       Haskii
       Haskii.Figlet
       Haskii.Figlet.FLF
-      Haskii.Figlet.Fonts
+      Haskii.Figlet.Fonts.Bigfig
+      Haskii.Figlet.Fonts.Bulbhead
+      Haskii.Figlet.Fonts.Contessa
+      Haskii.Figlet.Fonts.Cursive
+      Haskii.Figlet.Fonts.Cyberlarge
+      Haskii.Figlet.Fonts.Cybermedium
+      Haskii.Figlet.Fonts.Cybersmall
+      Haskii.Figlet.Fonts.Cygnet
+      Haskii.Figlet.Fonts.DanC4
+      Haskii.Figlet.Fonts.Double
+      Haskii.Figlet.Fonts.DoubleShorts
+      Haskii.Figlet.Fonts.Doubleshorts
+      Haskii.Figlet.Fonts.DrPepper
+      Haskii.Figlet.Fonts.Drpepper
+      Haskii.Figlet.Fonts.EftiPiti
+      Haskii.Figlet.Fonts.Eftipiti
+      Haskii.Figlet.Fonts.Eftirobot
+      Haskii.Figlet.Fonts.EftiWater
+      Haskii.Figlet.Fonts.Eftiwater
+      Haskii.Figlet.Fonts.FourTops
+      Haskii.Figlet.Fonts.Fourtops
+      Haskii.Figlet.Fonts.HeartLeft
+      Haskii.Figlet.Fonts.HeartRight
+      Haskii.Figlet.Fonts.Italic
+      Haskii.Figlet.Fonts.JSStickLetters
+      Haskii.Figlet.Fonts.Lcd
+      Haskii.Figlet.Fonts.Linux
+      Haskii.Figlet.Fonts.Lockergnome
+      Haskii.Figlet.Fonts.Madrid
+      Haskii.Figlet.Fonts.Maxfour
+      Haskii.Figlet.Fonts.Mike
+      Haskii.Figlet.Fonts.Mshebrew210
+      Haskii.Figlet.Fonts.Pepper
+      Haskii.Figlet.Fonts.Runic
+      Haskii.Figlet.Fonts.Runyc
+      Haskii.Figlet.Fonts.SantaClara
+      Haskii.Figlet.Fonts.Santaclara
+      Haskii.Figlet.Fonts.Serifcap
+      Haskii.Figlet.Fonts.Short
+      Haskii.Figlet.Fonts.SLScript
+      Haskii.Figlet.Fonts.Slscript
+      Haskii.Figlet.Fonts.Stforek
+      Haskii.Figlet.Fonts.Straight
+      Haskii.Figlet.Fonts.Thick
+      Haskii.Figlet.Fonts.Thin
+      Haskii.Figlet.Fonts.ThreePoint
+      Haskii.Figlet.Fonts.Threepoint
+      Haskii.Figlet.Fonts.Tombstone
+      Haskii.Figlet.Fonts.TwoPoint
+      Haskii.Figlet.Fonts.Twopoint
+      Haskii.Figlet.Fonts.Weird
       Haskii.Figlet.TH
       Haskii.Figlet.Types
       Haskii.Internal.Pair
