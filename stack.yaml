@@ -3,6 +3,7 @@ system-ghc: true
 allow-different-user: true
 packages:
   - .
+  - HaskiiFigletGen
 extra-deps:
   - ghc-source-gen-0.4.0.0@sha256:b6cdde6b183e70f6fbed3b0a45ad6640204b636e9a7fb898c5d7ec79719f14a1,3698
   - envparse-0.4.1@sha256:989902e6368532548f61de1fa245ad2b39176cddd8743b20071af519a709ce30,2842

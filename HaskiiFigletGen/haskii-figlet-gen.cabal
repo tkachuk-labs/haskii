@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           haskii
+name:           haskii-figlet-gen
 version:        0.1.0.0
 synopsis:       Functional, Monadic Ascii-Art.
 description:    Please see the README on GitHub at <https://github.com/tkachuk-labs/haskii#readme>
@@ -15,7 +15,6 @@ author:         Ilja Tkachuk
 maintainer:     tkachuk.labs@gmail.com
 copyright:      2021 Ilja Tkachuk
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
@@ -25,22 +24,12 @@ source-repository head
   type: git
   location: https://github.com/tkachuk-labs/haskii
 
-library
-  exposed-modules:
-      Haskii
-      Haskii.Figlet
-      Haskii.Figlet.FLF
-      Haskii.Figlet.TH
-      Haskii.Figlet.Types
-      Haskii.Internal.Pair
-      Haskii.Internal.RangeMap
-      Haskii.Rainbow
-      Haskii.Text
-      Haskii.Types
+executable haskii-figlet-gen
+  main-is: Main.hs
   other-modules:
-      Paths_haskii
+      Paths_haskii_figlet_gen
   hs-source-dirs:
-      Haskii
+      ./
   default-extensions:
       NoImplicitPrelude
       MultiParamTypeClasses
@@ -50,7 +39,7 @@ library
       DerivingStrategies
       FlexibleInstances
       TypeFamilies
-  ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction
+  ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       async
     , attoparsec ==0.13.*
@@ -71,8 +60,7 @@ library
     , ghc >=8.2 && <8.11
     , ghc-paths ==0.1.*
     , ghc-source-gen ==0.4.*
-    , hspec
-    , hspec-wai
+    , haskii
     , katip
     , lens
     , lens-simple ==0.1.*

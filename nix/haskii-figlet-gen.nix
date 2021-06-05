@@ -2,18 +2,16 @@ let nixpkgs = import ./nixpkgs.nix;
 in
 {
   pkgs ? import nixpkgs {
-    overlays = import ./overlay.nix {};
+    overlays = import ./overlay.nix {
+    };
   },
-  hexOrganization ? null, # organization account name on hex.pm
-  hexApiKey ? null,       # plain text account API key on hex.pm
-  robotSshKey ? null      # base64-encoded private id_rsa (for private git)
 }:
 with pkgs;
-
 let callPackage = lib.callPackageWith haskellPackages;
-    pkg = callPackage ./pkg.nix {inherit stdenv;};
-    systemDeps = [ protobuf makeWrapper cacert ];
-    testDeps = [ postgresql ];
+    haskii = callPackage ./default.nix {};
+    pkg = callPackage ./pkg-haskii-figlet-gen.nix {inherit stdenv haskii;};
+    systemDeps = [ protobuf cacert ];
+    testDeps = [ ];
 in
   haskell.lib.overrideCabal pkg (drv: {
     setupHaskellDepends =
@@ -24,10 +22,12 @@ in
       if drv ? "testSystemDepends"
       then drv.testSystemDepends ++ testDeps
       else testDeps;
-    isExecutable = false;
+    isExecutable = true;
     enableSharedExecutables = false;
     enableLibraryProfiling = false;
-    isLibrary = true;
+    isLibrary = false;
     doHaddock = false;
     prePatch = "hpack --force";
+    postFixup = "rm -rf $out/lib $out/nix-support $out/share/doc";
   })
+

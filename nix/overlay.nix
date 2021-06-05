@@ -1,7 +1,4 @@
 {
-  hexOrganization,
-  hexApiKey,
-  robotSshKey,
   vimBackground ? "light",
   vimColorScheme ? "PaperColor"
 }:
@@ -24,6 +21,9 @@
                 stdenv = self.stdenv;
                 fetchgit = self.fetchgit;
               });
+            ghc-source-gen = callPackage ./overlay/ghc-source-gen.nix {
+              stdenv = self.stdenv;
+            };
             hspec-wai = callPackage ./overlay/hspec-wai.nix {
               stdenv = self.stdenv;
             };

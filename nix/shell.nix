@@ -1,9 +1,10 @@
 let nixpkgs = import ./nixpkgs.nix;
+    haskii-figlet-gen = import ./haskii-figlet-gen.nix {};
 in
 {
   pkgs ? import nixpkgs {
     overlays = import ./overlay.nix {
-      inherit hexOrganization hexApiKey robotSshKey vimBackground vimColorScheme;
+      inherit vimBackground vimColorScheme;
     };
   },
   hexOrganization ? null, # organization account name on hex.pm
@@ -21,6 +22,7 @@ stdenv.mkDerivation {
   buildInputs = [
     /* IDE */
     haskell-ide
+    haskii-figlet-gen
     /* Apps */
     postgresql
     /* Utils */
