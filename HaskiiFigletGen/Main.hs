@@ -7,7 +7,7 @@ import CoreMonad (getDynFlags)
 import qualified Data.Char as C
 import Data.List.Extra (nubOrdOn)
 import qualified Data.Text as T
-import GHC (DynFlags (..), runGhc)
+import GHC (DynFlags, runGhc)
 import GHC.Paths (libdir)
 import GHC.SourceGen
 import GHC.SourceGen.Decl (prefixCon)
@@ -16,7 +16,8 @@ import GHC.SourceGen.Pretty (showPpr)
 import GhcMonad (liftIO)
 import qualified Haskii.Figlet.FLF as FLF
 import Haskii.Figlet.Types (FLF)
-import System.Directory (removeFile)
+import qualified Options.Applicative as Opt
+import System.Directory (createDirectoryIfMissing, removeFile)
 import System.Directory.Tree
   ( AnchoredDirTree (..),
     DirTree (..),
@@ -35,6 +36,13 @@ newtype FLFName
 data FLFData
   = FLFData FLFName FLF
   deriving (Show)
+
+data Arg
+  = Arg
+      { argInputDir :: String,
+        argOutputDir :: String
+      }
+  deriving (Eq, Ord, Show)
 
 dir :: String
 dir = "figlet-fonts"
@@ -108,12 +116,15 @@ mkFontType flfs =
         ]
     ]
 
-genFLF :: DynFlags -> String -> FLFData -> IO ()
-genFLF dflags prog flf@(FLFData (FLFName flfName) flf0) =
+genFLF :: DynFlags -> String -> Arg -> FLFData -> IO ()
+genFLF dflags prog arg flf@(FLFData (FLFName flfName) flf0) = do
+  createDirectoryIfMissing True outputDir
   writeFile
-    ("./Haskii/Haskii/Figlet/Font/" <> flfName <> ".hs")
+    (outputDir <> "/" <> flfName <> ".hs")
     $ header <> "\n\n" <> body
   where
+    outputDir :: String
+    outputDir = (argOutputDir arg) <> "/Haskii/Figlet/Font"
     header :: Text
     header =
       T.intercalate
@@ -141,12 +152,15 @@ genFLF dflags prog flf@(FLFData (FLFName flfName) flf0) =
         <> "\ngetFLF = "
         <> show flf0
 
-genFLFsIndex :: DynFlags -> String -> [FLFData] -> IO ()
-genFLFsIndex dflags prog flfs =
-  writeFile
-    "./Haskii/Haskii/Figlet/Font.hs"
-    $ header <> "\n\n" <> body
+genFLFsIndex :: DynFlags -> String -> Arg -> [FLFData] -> IO ()
+genFLFsIndex dflags prog arg flfs = do
+  createDirectoryIfMissing True outputDir
+  writeFile outputFile $ header <> "\n\n" <> body
   where
+    outputDir :: String
+    outputDir = (argOutputDir arg) <> "/Haskii/Figlet"
+    outputFile :: String
+    outputFile = outputDir <> "/Font.hs"
     header :: Text
     header =
       T.intercalate
@@ -189,11 +203,41 @@ genFLFsIndex dflags prog flfs =
                 (var . fromString $ showFLFModule flf <> ".getFLF")
           )
 
+argParser :: Opt.Parser Arg
+argParser =
+  Arg
+    <$> Opt.strOption
+      ( Opt.long "input-dir"
+          <> Opt.short 'i'
+          <> Opt.metavar "INPUT_DIR"
+          <> Opt.help "Input directory where figlet fonts are located"
+      )
+    <*> Opt.strOption
+      ( Opt.long "output-dir"
+          <> Opt.short 'o'
+          <> Opt.metavar "OUTPUT_DIR"
+          <> Opt.help "Output directory where Haskell Figlet fonts are written"
+      )
+
+getArg :: IO Arg
+getArg = Opt.execParser opts
+  where
+    opts =
+      Opt.info
+        (argParser <**> Opt.helper)
+        ( Opt.fullDesc
+            <> Opt.progDesc
+              "Take Figlet fonts from INPUT_DIR and generate corresponding Haskell files in OUTPUT_DIR"
+            <> Opt.header
+              "haskii-figlet-gen - a Figlet to Haskell compiler"
+        )
+
 main :: IO ()
 main = do
+  arg <- getArg
   prog <- getProgName
   flfs <- parseFLFs
   runGhc (Just libdir) $ do
     dflags <- getDynFlags
-    liftIO $ genFLFsIndex dflags prog flfs
-    mapM_ (liftIO . genFLF dflags prog) flfs
+    liftIO $ genFLFsIndex dflags prog arg flfs
+    mapM_ (liftIO . genFLF dflags prog arg) flfs

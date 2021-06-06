@@ -67,6 +67,7 @@ executable haskii-figlet-gen
     , microlens
     , monad-logger
     , mtl ==2.2.*
+    , optparse-applicative ==0.14.*
     , persistent
     , persistent-migration
     , persistent-postgresql

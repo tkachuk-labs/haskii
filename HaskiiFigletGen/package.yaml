@@ -38,6 +38,7 @@ dependencies:
 - ghc >= 8.2 && < 8.11
 - ghc-paths == 0.1.*
 - ghc-source-gen >= 0.4 && < 0.5
+- optparse-applicative >= 0.14 && < 0.15
 # time
 - time
 - chronos

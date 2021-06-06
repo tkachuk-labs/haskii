@@ -5,6 +5,7 @@ packages:
   - .
   - HaskiiFigletGen
 extra-deps:
+  #- optparse-applicative-0.16.1.0@sha256:d410cc76e288b93d4ee7e06addc0381a7eaea43bcee0c3ced03f05cadec2f2fc,4836
   - ghc-source-gen-0.4.0.0@sha256:b6cdde6b183e70f6fbed3b0a45ad6640204b636e9a7fb898c5d7ec79719f14a1,3698
   - envparse-0.4.1@sha256:989902e6368532548f61de1fa245ad2b39176cddd8743b20071af519a709ce30,2842
   - hspec-wai-0.10.1@sha256:56dd9ec1d56f47ef1946f71f7cbf070e4c285f718cac1b158400ae5e7172ef47,2290
