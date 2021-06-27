@@ -30,7 +30,6 @@ library
       Haskii
       Haskii.Figlet
       Haskii.Figlet.FLF
-      Haskii.Figlet.TH
       Haskii.Figlet.Types
       Haskii.Internal.Pair
       Haskii.Internal.RangeMap
@@ -52,51 +51,15 @@ library
       TypeFamilies
   ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction
   build-depends:
-      async
-    , attoparsec ==0.13.*
+      attoparsec ==0.13.*
     , base >=4.7 && <5
     , bytestring ==0.10.*
     , casing >=0.1.4 && <0.2
-    , chronos
-    , concur-core
-    , concur-replica
-    , containers
-    , directory
-    , directory-tree
-    , envparse
-    , esqueleto
-    , extra
-    , file-embed
-    , filepath
-    , ghc >=8.2 && <8.11
-    , ghc-paths ==0.1.*
-    , ghc-source-gen ==0.4.*
+    , containers >=0.5 && <0.7
     , hspec
-    , hspec-wai
-    , katip
-    , lens
     , lens-simple ==0.1.*
-    , microlens
-    , monad-logger
     , mtl ==2.2.*
-    , persistent
-    , persistent-migration
-    , persistent-postgresql
-    , persistent-template
     , rainbow >=0.28 && <0.31
-    , replica
-    , resource-pool
-    , retry
-    , stm
-    , template-haskell
-    , text
-    , th-lift-instances
-    , time
-    , unbounded-delays
+    , text ==1.2.*
     , universum
-    , unliftio
-    , wai
-    , wai-middleware-static-embedded
-    , warp
-    , websockets
   default-language: Haskell2010

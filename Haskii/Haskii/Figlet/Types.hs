@@ -1,13 +1,9 @@
-{-# LANGUAGE DeriveLift #-}
-{-# LANGUAGE TemplateHaskell #-}
 {-# OPTIONS_GHC -Wno-missing-export-lists #-}
 
 module Haskii.Figlet.Types where
 
 import qualified Data.Map as M
 import Data.Text (Text)
-import Instances.TH.Lift ()
-import Language.Haskell.TH.Syntax
 import Universum
 
 data SmushRule
@@ -17,12 +13,12 @@ data SmushRule
   | Opposite
   | BigX
   | Horizontal
-  deriving (Show, Ord, Eq, Enum, Bounded, Lift)
+  deriving (Show, Ord, Eq, Enum, Bounded)
 
 type ApplySmush = (Char -> Char -> Maybe Char)
 
 data Mode = FullSize | Kerning | Smushing [SmushRule]
-  deriving (Show, Lift)
+  deriving (Show)
 
 data Layout
   = Layout
@@ -44,4 +40,4 @@ data FLF
         codetagCount :: Maybe Int,
         charData :: CharMap
       }
-  deriving (Show, Lift)
+  deriving (Show)
